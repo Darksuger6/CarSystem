@@ -19,49 +19,51 @@ win32-msvc {
 INC_ROOT = $$PWD/inc
 
 INCLUDEPATH += \
-    $$INC_ROOT
+    $$INC_ROOT \
+    $$INC_ROOT/app \
+    $$INC_ROOT/drv
 
 SOURCES += \
-    src/Audio.cpp \
-    src/buzzer.cpp \
-    src/citycodeutils.cpp \
-    src/day.cpp \
-    src/dht11.cpp \
-    src/hardware.cpp \
-    src/led.cpp \
     src/main.cpp \
-    src/mainwindow.cpp \
-    src/map.cpp \
-    src/mq135.cpp \
-    src/player.cpp \
-    src/playercontrols.cpp \
-    src/playlistmodel.cpp \
-    src/rotatablewidget.cpp \
-    src/simplemessagebox.cpp \
-    src/sr04.cpp \
-    src/videowidget.cpp \
-    src/weather.cpp
+    src/app/Audio.cpp \
+    src/app/citycodeutils.cpp \
+    src/app/day.cpp \
+    src/app/mainwindow.cpp \
+    src/app/map.cpp \
+    src/app/player.cpp \
+    src/app/playercontrols.cpp \
+    src/app/playlistmodel.cpp \
+    src/app/rotatablewidget.cpp \
+    src/app/simplemessagebox.cpp \
+    src/app/videowidget.cpp \
+    src/app/weather.cpp \
+    src/drv/hardware.cpp \
+    src/drv/buzzer.cpp \
+    src/drv/dht11.cpp \
+    src/drv/led.cpp \
+    src/drv/sr04.cpp \
+    src/drv/mq135.cpp \
 
 HEADERS += \
-    inc/Audio.h \
-    inc/buzzer.h \
-    inc/citycodeutils.h \
-    inc/commonhelper.h \
-    inc/day.h \
-    inc/dht11.h \
-    inc/hardware.h \
-    inc/led.h \
-    inc/mainwindow.h \
-    inc/map.h \
-    inc/mq135.h \
-    inc/player.h \
-    inc/playercontrols.h \
-    inc/playlistmodel.h \
-    inc/rotatablewidget.h \
-    inc/simplemessagebox.h \
-    inc/sr04.h \
-    inc/videowidget.h \
-    inc/weather.h
+    inc/app/Audio.h \
+    inc/app/citycodeutils.h \
+    inc/app/commonhelper.h \
+    inc/app/day.h \
+    inc/app/mainwindow.h \
+    inc/app/map.h \
+    inc/app/player.h \
+    inc/app/playercontrols.h \
+    inc/app/playlistmodel.h \
+    inc/app/rotatablewidget.h \
+    inc/app/simplemessagebox.h \
+    inc/app/videowidget.h \
+    inc/app/weather.h \
+    inc/drv/hardware.h \
+    inc/drv/buzzer.h \
+    inc/drv/dht11.h \
+    inc/drv/led.h \
+    inc/drv/sr04.h \
+    inc/drv/mq135.h \
 
 FORMS += \
     Audio.ui \

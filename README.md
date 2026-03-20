@@ -6,17 +6,17 @@
 
 # driver device
 
-## 温湿度传感器
+## 温湿度传感器dht11
     /dev/mydht11
 
-## 超声波传感器
+## 超声波传感器sr04
     /dev/mysr04
 
-## 蜂鸣器
+## 蜂鸣器buzzer
     /dev/mybuzzer
 
 ## led灯
     /dev/myled
 
-## 气体传感器(读取方式ADC)
+## 气体传感器mq135(读取方式ADC)
     /sys/bus/iio/devices/iio:device0/in_voltage3_raw

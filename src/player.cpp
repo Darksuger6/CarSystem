@@ -279,7 +279,7 @@ void Player::open()
     }
 
     // 设置文件对话框的初始目录为当前目录下的Videos文件夹
-    fileDialog.setDirectory(QCoreApplication::applicationDirPath() + "/Videos");
+    fileDialog.setDirectory(QCoreApplication::applicationDirPath() + "/videos");
 
     // 选择文件
     if (fileDialog.exec() == QDialog::Accepted) {
@@ -364,7 +364,7 @@ void Player::loadPlaylistFromDatabase()
 QString Player::findVideoPath(const QString &videoName)
 {
     // 原始路径
-    QString basePath = QCoreApplication::applicationDirPath() + "/Videos";
+    QString basePath = QCoreApplication::applicationDirPath() + "/videos";
 
     // 先尝试查找.mp4格式的文件
     QString videoPathMp4 = basePath + QDir::separator() + videoName + ".mp4";

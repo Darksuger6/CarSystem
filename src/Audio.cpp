@@ -162,7 +162,7 @@ void Audio::scanSongs()
 {
     // 获取当前程序路径下的myMusic目录
     QDir dir(QCoreApplication::applicationDirPath()
-             + "/myMusic");
+             + "/music");
 
     // 获取歌曲目录绝对路径
     QDir dirbsolutePath(dir.absolutePath());

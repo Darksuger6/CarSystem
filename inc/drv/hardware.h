@@ -19,6 +19,7 @@ class Hardware : public QMainWindow
 public:
     Hardware(QWidget *parent = nullptr);
     ~Hardware();
+
 public slots:
     void dht11_handler(void);
     void sr04_handler(void);
@@ -27,6 +28,7 @@ public slots:
 
 signals:
     void back1();
+
 private slots:
     void on_back1_clicked();
 

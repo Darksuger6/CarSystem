@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <QDebug>
+
 Led::Led(QWidget *parent) : QMainWindow(parent)
 {
     led_fd = open(led_device.toStdString().c_str(),O_RDWR);

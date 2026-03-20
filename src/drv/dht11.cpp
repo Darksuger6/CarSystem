@@ -7,6 +7,7 @@
 #include <string.h>
 #include <QDebug>
 #include <QTimer>
+
 DHT11::DHT11(QWidget *parent) : QMainWindow(parent)
 {
     dht11_fd = open(dht11_device.toStdString().c_str(),O_RDONLY);

@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <QTimer>
+
 Sr04::Sr04(QWidget *parent) : QMainWindow(parent)
 {
     sr04_fd = open(sr04_device.toStdString().c_str(),O_RDONLY);
@@ -24,7 +25,6 @@ Sr04::Sr04(QWidget *parent) : QMainWindow(parent)
     connect(sr04_timer,&QTimer::timeout,this,&Sr04::timeto_read_sr04data);
     sr04_timer->start();
 }
-
 
 void Sr04::sr04_read(int *buf)
 {

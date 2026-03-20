@@ -7,14 +7,13 @@
 #include <string.h>
 #include <QDebug>
 #include <QTimer>
+
 Mq135::Mq135(QWidget *parent) : QMainWindow(parent)
 {
-
     mq135_timer = new QTimer(this);
     mq135_timer->setInterval(2000);
     connect(mq135_timer,&QTimer::timeout,this,&Mq135::timeto_read_mq135data);
     mq135_timer->start();
-
 }
 
 void Mq135::mq135_read(char *buf)
@@ -32,8 +31,6 @@ void Mq135::mq135_read(char *buf)
     }
     len = read(raw_fd, buf, sizeof(buf));
 }
-
-
 
 void Mq135::timeto_read_mq135data()
 {

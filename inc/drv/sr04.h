@@ -12,8 +12,10 @@ public:
 
 public slots:
     void timeto_read_sr04data(void);
+
 signals:
     void readyto_read_sr04data(void);
+
 private:
     int sr04_fd;
     QString sr04_device = "/dev/mysr04";

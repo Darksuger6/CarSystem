@@ -8,12 +8,12 @@ Hardware::Hardware(QWidget *parent)
     , ui(new Ui::Hardware)
 {
     ui->setupUi(this);
+
     dht11 = new DHT11(this);
     sr04 = new Sr04(this);
     buzzer = new Buzzer(this);
     led = new Led(this);
     mq135 = new Mq135(this);
-
 }
 
 Hardware::~Hardware()
@@ -28,7 +28,6 @@ void Hardware::dht11_handler()
     ui->Temp_label->setNum(data[2]);
     ui->Humi_label->setNum(data[0]);
 }
-
 
 void Hardware::sr04_handler()
 {
@@ -64,7 +63,6 @@ void Hardware::sr04_handler()
         pixmap2 = pixmap2.scaled(QSize(120, 120), Qt::KeepAspectRatio);
         ui->buzzer->setPixmap(pixmap2);
     }
-
 }
 
 void Hardware::mq135_handler()
@@ -105,7 +103,6 @@ void Hardware::mq135_handler()
         led->led_write(led_buf);
         ui->led->setPixmap(pixmap1);
     }
-
 }
 
 void Hardware::hardware_working()
@@ -113,11 +110,7 @@ void Hardware::hardware_working()
     connect(dht11,&DHT11::readyto_read_dht11data,this,&Hardware::dht11_handler);
     connect(sr04,&Sr04::readyto_read_sr04data,this,&Hardware::sr04_handler);
     connect(mq135,&Mq135::readyto_read_mq135data,this,&Hardware::mq135_handler);
-
 }
-
-
-
 
 void Hardware::on_back1_clicked()
 {

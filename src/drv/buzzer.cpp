@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <QDebug>
+
 Buzzer::Buzzer(QWidget *parent) : QMainWindow(parent)
 {
     buzzer_fd = open(buzzer_device.toStdString().c_str(),O_RDWR);

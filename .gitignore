@@ -42,4 +42,10 @@
 
 # projects
 build/
-*pro.user
+
+# QtCreator
+*.pro.user
+*.pro.user.*
+
+# VSCode
+.vscode/

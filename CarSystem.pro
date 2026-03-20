@@ -11,58 +11,57 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
-# The following define makes your compiler emit warnings if you use
-# any Qt feature that has been marked deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS
+win32-msvc {
+    QMAKE_CXXFLAGS += /utf-8
+    QMAKE_CFLAGS   += /utf-8
+}
 
-# You can also make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+INC_ROOT = $$PWD/inc
+
+INCLUDEPATH += \
+    $$INC_ROOT
 
 SOURCES += \
-    Audio.cpp \
-    buzzer.cpp \
-    citycodeutils.cpp \
-    day.cpp \
-    dht11.cpp \
-    hardware.cpp \
-    led.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    map.cpp \
-    mq135.cpp \
-    player.cpp \
-    playercontrols.cpp \
-    playlistmodel.cpp \
-    rotatablewidget.cpp \
-    simplemessagebox.cpp \
-    sr04.cpp \
-    videowidget.cpp \
-    weather.cpp
+    src/Audio.cpp \
+    src/buzzer.cpp \
+    src/citycodeutils.cpp \
+    src/day.cpp \
+    src/dht11.cpp \
+    src/hardware.cpp \
+    src/led.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/map.cpp \
+    src/mq135.cpp \
+    src/player.cpp \
+    src/playercontrols.cpp \
+    src/playlistmodel.cpp \
+    src/rotatablewidget.cpp \
+    src/simplemessagebox.cpp \
+    src/sr04.cpp \
+    src/videowidget.cpp \
+    src/weather.cpp
 
 HEADERS += \
-    Audio.h \
-    buzzer.h \
-    citycodeutils.h \
-    commonhelper.h \
-    day.h \
-    dht11.h \
-    hardware.h \
-    led.h \
-    mainwindow.h \
-    map.h \
-    mq135.h \
-    player.h \
-    playercontrols.h \
-    playlistmodel.h \
-    rotatablewidget.h \
-    simplemessagebox.h \
-    sr04.h \
-    videowidget.h \
-    weather.h
+    inc/Audio.h \
+    inc/buzzer.h \
+    inc/citycodeutils.h \
+    inc/commonhelper.h \
+    inc/day.h \
+    inc/dht11.h \
+    inc/hardware.h \
+    inc/led.h \
+    inc/mainwindow.h \
+    inc/map.h \
+    inc/mq135.h \
+    inc/player.h \
+    inc/playercontrols.h \
+    inc/playlistmodel.h \
+    inc/rotatablewidget.h \
+    inc/simplemessagebox.h \
+    inc/sr04.h \
+    inc/videowidget.h \
+    inc/weather.h
 
 FORMS += \
     Audio.ui \
@@ -79,3 +78,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+DEFINES += QT_DEPRECATED_WARNINGS

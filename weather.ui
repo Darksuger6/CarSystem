@@ -48,8 +48,8 @@
         <widget class="QPushButton" name="back">
          <property name="minimumSize">
           <size>
-           <width>20</width>
-           <height>30</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
          <property name="styleSheet">

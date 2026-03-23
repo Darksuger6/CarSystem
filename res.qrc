@@ -17,7 +17,6 @@
         <file>images/btn_previous2.png</file>
         <file>images/close.png</file>
         <file>images/disc.png</file>
-        <file>images/fengshen.jpg</file>
         <file>images/quit.png</file>
         <file>images/return.png</file>
         <file>images/return2.png</file>
@@ -100,5 +99,6 @@
         <file>images/Video1.png</file>
         <file>images/back1.png</file>
         <file>images/1.png</file>
+        <file>images/fengshen.png</file>
     </qresource>
 </RCC>

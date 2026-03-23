@@ -1,10 +1,8 @@
 #include "mq135.h"
-#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <string.h>
 #include <QDebug>
 #include <QTimer>
 
@@ -20,14 +18,12 @@ void Mq135::mq135_read(char *buf)
 {
     int len;
     raw_fd = open(in_voltage3_raw.toStdString().c_str(),O_RDONLY);
-    if(raw_fd < 0)
-    {
+    if(raw_fd < 0){
         qDebug() << "fail to open in_voltage3_raw\n";
         return;
     }
-    else
-    {
-        qDebug() << "open in_voltage3_raw success" << endl;
+    else{
+        qDebug() << "open in_voltage3_raw success";
     }
     len = read(raw_fd, buf, sizeof(buf));
 }

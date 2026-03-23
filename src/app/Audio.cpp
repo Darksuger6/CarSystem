@@ -22,7 +22,7 @@ Audio::Audio(QWidget *parent) :
 
     /* 唱片*/
     // 设置专辑封面
-    setAlbumArt(QPixmap(":/images/fengshen.jpg"));
+    setAlbumArt(QPixmap(":/images/fengshen.png"));
 
     QPixmap tmpPixmap(":/images/disc.png");
     QPixmap rotatingPixmap2 = tmpPixmap.scaled(240, 240, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -299,7 +299,7 @@ void Audio::setAlbumArt(QPixmap pixmap)
         ui->widget->setStyleSheet("QWidget#widget{\n"
                                   "border:none;\n"
                                   "border-radius:120px;\n"
-                                  "image: url(:/images/fengshen.jpg);}");
+                                  "image: url(:/images/fengshen.png);}");
     }
 }
 // 播放/暂停按钮点击事件处理
@@ -490,11 +490,11 @@ void Audio::onMetaDataAvailableChanged(bool available) {
                 setAlbumArt(QPixmap::fromImage(coverArtImage));
             } else {
                 // 如果没有封面图像，则可以设置一个默认图片
-                setAlbumArt(QPixmap(":/images/fengshen.jpg"));
+                setAlbumArt(QPixmap(":/images/fengshen.png"));
             }
         }
         else
-            setAlbumArt(QPixmap(":/images/fengshen.jpg"));
+            setAlbumArt(QPixmap(":/images/fengshen.png"));
     }
 }
 
@@ -534,7 +534,7 @@ void Audio::on_pushButton_clicked()
     ui->label_3->setText("");
 
     // 设置专辑封面为初始默认图片
-    setAlbumArt(QPixmap(":/images/fengshen.jpg"));
+    setAlbumArt(QPixmap(":/images/fengshen.png"));
 
     // 重置当前歌词路径为空
     currentLyricsPath.clear();

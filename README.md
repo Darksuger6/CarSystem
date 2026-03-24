@@ -8,9 +8,14 @@
 
 ## 温湿度传感器dht11
     /dev/mydht11
+引脚:
+    out === gpio2
 
 ## 超声波传感器sr04
     /dev/mysr04
+引脚:
+    trig === gpio0
+    echo === gpio1
 
 ## 蜂鸣器buzzer
     /dev/mybuzzer

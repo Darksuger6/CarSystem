@@ -21,7 +21,7 @@ INC_ROOT = $$PWD/inc
 INCLUDEPATH += \
     $$INC_ROOT \
     $$INC_ROOT/app \
-    $$INC_ROOT/drv
+    $$INC_ROOT/dev_app
 
 SOURCES += \
     src/main.cpp \
@@ -37,12 +37,12 @@ SOURCES += \
     src/app/simplemessagebox.cpp \
     src/app/videowidget.cpp \
     src/app/weather.cpp \
-    src/drv/hardware.cpp \
-    src/drv/buzzer.cpp \
-    src/drv/dht11.cpp \
-    src/drv/led.cpp \
-    src/drv/sr04.cpp \
-    src/drv/mq135.cpp \
+    src/dev_app/hardware.cpp \
+    src/dev_app/buzzer.cpp \
+    src/dev_app/dht11.cpp \
+    src/dev_app/led.cpp \
+    src/dev_app/sr04.cpp \
+    src/dev_app/mq135.cpp \
 
 HEADERS += \
     inc/app/Audio.h \
@@ -58,12 +58,12 @@ HEADERS += \
     inc/app/simplemessagebox.h \
     inc/app/videowidget.h \
     inc/app/weather.h \
-    inc/drv/hardware.h \
-    inc/drv/buzzer.h \
-    inc/drv/dht11.h \
-    inc/drv/led.h \
-    inc/drv/sr04.h \
-    inc/drv/mq135.h \
+    inc/dev_app/hardware.h \
+    inc/dev_app/buzzer.h \
+    inc/dev_app/dht11.h \
+    inc/dev_app/led.h \
+    inc/dev_app/sr04.h \
+    inc/dev_app/mq135.h \
 
 FORMS += \
     Audio.ui \

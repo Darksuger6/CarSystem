@@ -53,7 +53,7 @@ void Hardware::sr04_handler()
     float f = time_ns * 340.0f / 2 / 1000000000.0f * 100.0f;
     QString s = QString::number(f, 'f', 1);
 
-    // qDebug() << "sr04 distance:" << s;
+    qDebug() << "sr04 distance:" << s;
 
     ui->Sr04_label->setText(s);
 

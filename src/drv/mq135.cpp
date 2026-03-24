@@ -23,7 +23,7 @@ void Mq135::mq135_read(char *buf)
         return;
     }
     else{
-        qDebug() << "open in_voltage3_raw success";
+//        qDebug() << "open in_voltage3_raw success";
     }
     len = read(raw_fd, buf, sizeof(buf));
 }

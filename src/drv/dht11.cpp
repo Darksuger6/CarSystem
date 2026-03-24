@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 #include <QDebug>
 #include <QTimer>
 
@@ -12,8 +13,7 @@ DHT11::DHT11(QWidget *parent) : QMainWindow(parent)
     if(dht11_fd < 0){
         qDebug() << "fail to open /dev/mydht11\n";
         return;
-    }
-    else{
+    }else{
         qDebug() << "open dht11 success";
     }
     dht11_timer = new QTimer(this);
@@ -24,11 +24,20 @@ DHT11::DHT11(QWidget *parent) : QMainWindow(parent)
 
 void DHT11::dht11_read(char *buf)
 {
-    int len;
-    len = read(dht11_fd, buf, 4);
+    int ret = read(dht11_fd, buf, 2);
+
+    if (ret != 2) {
+        // qDebug() << "dht11 read error" << ret;
+        buf[0] = 0xFF;
+        buf[1] = 0xFF;
+    }
 }
 
 void DHT11::timeto_read_dht11data()
 {
+    // 通知内核驱动开始采集（驱动内部会拉低 18ms + 解析 40bit）
+    ioctl(dht11_fd, CMD_DATA);
+
+    // 通知 UI 层可以 read 了
     emit readyto_read_dht11data();
 }

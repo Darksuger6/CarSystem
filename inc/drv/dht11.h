@@ -3,15 +3,19 @@
 
 #include <QMainWindow>
 
+#define CMD_DATA   200
+
 class DHT11 : public QMainWindow
 {
     Q_OBJECT
+    
 public:
     explicit DHT11(QWidget *parent = nullptr);
     void dht11_read(char *buf);
 
 public slots:
     void timeto_read_dht11data(void);
+
 signals:
     void readyto_read_dht11data(void);
 

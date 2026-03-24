@@ -23,10 +23,23 @@ Hardware::~Hardware()
 
 void Hardware::dht11_handler()
 {
-    char data[4];
-    dht11->dht11_read(data);
-    ui->Temp_label->setNum(data[2]);
-    ui->Humi_label->setNum(data[0]);
+    unsigned char data[2] = {0};
+
+    dht11->dht11_read((char*)data);
+
+    // 判断是否读取失败
+    if (data[0] == 0xFF || data[1] == 0xFF) {
+        // qDebug() << "DHT11 read failed";
+        // ui->Temp_label->setText("--");
+        // ui->Humi_label->setText("--");
+        return;
+    }
+
+    // qDebug() << "湿度:" << (int)data[0];
+    // qDebug() << "温度:" << (int)data[1];
+
+    ui->Humi_label->setNum((int)data[0]);
+    ui->Temp_label->setNum((int)data[1]);
 }
 
 void Hardware::sr04_handler()

@@ -31,37 +31,40 @@ void Hardware::dht11_handler()
 
 void Hardware::sr04_handler()
 {
-    int dis;
+    int time_ns;
+    char buf = 1;   // 必须在函数顶部声明，不要放 if 里
 
-    char buf = 1;
-    sr04->sr04_read(&dis);
-    float f = static_cast<float>(dis);
-    f = f * 340 / 2 / 1000000 / 10;
+    sr04->sr04_read(&time_ns);
 
-    // 使用QString的格式化功能来保留两位小数
-    QString strValue = QString::number(f, 'f', 2);
-    ui->Sr04_label->setText(strValue);
-    if(f < 30){
+    // ns → cm
+    float f = time_ns * 340.0f / 2 / 1000000000.0f * 100.0f;
+    QString s = QString::number(f, 'f', 1);
+
+    // qDebug() << "sr04 distance:" << s;
+
+    ui->Sr04_label->setText(s);
+
+    if (f < 30)
+    {
         QPixmap pixmap(":/images/car-chose.png");
-        pixmap = pixmap.scaled(QSize(91, 111), Qt::KeepAspectRatio);
-        ui->label_3->setPixmap(pixmap);
+        ui->label_3->setPixmap(pixmap.scaled(QSize(91, 111), Qt::KeepAspectRatio));
         ui->Sr04labal->setStyleSheet("color: red;");
 
         buf = 0;
         buzzer->buzzer_write(buf);
         QPixmap pixmap2(":/images/buzzer-chose.png");
-        pixmap2 = pixmap2.scaled(QSize(120, 120), Qt::KeepAspectRatio);
-        ui->buzzer->setPixmap(pixmap2);
-    }else{
+        ui->buzzer->setPixmap(pixmap2.scaled(QSize(120, 120), Qt::KeepAspectRatio));
+    }
+    else
+    {
         QPixmap pixmap(":/images/car.png");
-        pixmap = pixmap.scaled(QSize(91, 111), Qt::KeepAspectRatio);
-        ui->label_3->setPixmap(pixmap);
+        ui->label_3->setPixmap(pixmap.scaled(QSize(91, 111), Qt::KeepAspectRatio));
         ui->Sr04labal->setStyleSheet("color: rgb(85, 170, 255);");
+
         buf = 1;
         buzzer->buzzer_write(buf);
         QPixmap pixmap2(":/images/buzzer.png");
-        pixmap2 = pixmap2.scaled(QSize(120, 120), Qt::KeepAspectRatio);
-        ui->buzzer->setPixmap(pixmap2);
+        ui->buzzer->setPixmap(pixmap2.scaled(QSize(120, 120), Qt::KeepAspectRatio));
     }
 }
 

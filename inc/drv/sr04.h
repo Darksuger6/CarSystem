@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#define CMD_TRIG 100
+
 class Sr04 : public QMainWindow
 {
     Q_OBJECT

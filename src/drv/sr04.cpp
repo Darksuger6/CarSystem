@@ -4,11 +4,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 #include <QTimer>
 
 Sr04::Sr04(QWidget *parent) : QMainWindow(parent)
 {
-    sr04_fd = open(sr04_device.toStdString().c_str(),O_RDONLY);
+    sr04_fd = open(sr04_device.toStdString().c_str(),O_RDONLY | O_NONBLOCK);
     if(sr04_fd < 0){
         qDebug() << "fail to open /dev/mysr04\n";
         return;
@@ -24,11 +25,11 @@ Sr04::Sr04(QWidget *parent) : QMainWindow(parent)
 
 void Sr04::sr04_read(int *buf)
 {
-    int len;
-    len = read(sr04_fd, buf, 4);
+    read(sr04_fd, buf, 4);
 }
 
 void Sr04::timeto_read_sr04data()
 {
+    ioctl(sr04_fd, CMD_TRIG);
     emit readyto_read_sr04data();
 }

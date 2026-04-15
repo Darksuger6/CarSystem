@@ -1,73 +1,95 @@
 #include <linux/module.h>
 #include <linux/fs.h>
-#include <linux/uaccess.h>
 #include <linux/device.h>
 #include <linux/gpio.h>
-
-#define DEVICE_NAME "mybuzzer"
-
-/* 修改为你实际使用的GPIO */
-#define BUZZER_GPIO  (1*32 + 3)   // GPIO1_IO03
+#include <linux/of_gpio.h>
+#include <linux/uaccess.h>
 
 static int major;
 static struct class *buzzer_class;
 
-/* 写操作控制蜂鸣器 */
-static ssize_t buzzer_write(struct file *file,
-                            const char __user *buf,
+#define BUZZER_GPIO  118
+
+/* write: 控制蜂鸣器 */
+static ssize_t buzzer_write(struct file *file, const char __user *buf,
                             size_t count, loff_t *ppos)
 {
-    char kbuf[2];
+    char val;
+    int ret;
 
-    if (copy_from_user(kbuf, buf, 1))
+    if (count != 1)
+        return -EINVAL;
+
+    ret = copy_from_user(&val, buf, 1);
+    if (ret)
         return -EFAULT;
 
-    if (kbuf[0] == '1') {
-        gpio_set_value(BUZZER_GPIO, 1);
-    } else {
-        gpio_set_value(BUZZER_GPIO, 0);
+    if (val == 0)
+    {
+        gpio_set_value(BUZZER_GPIO, 0);  // 响（低电平触发）
+    }
+    else
+    {
+        gpio_set_value(BUZZER_GPIO, 1);  // 关闭
     }
 
-    return count;
+    return 1;
+}
+
+static int buzzer_open(struct inode *inode, struct file *file)
+{
+    return 0;
+}
+
+static int buzzer_release(struct inode *inode, struct file *file)
+{
+    return 0;
 }
 
 static struct file_operations buzzer_fops = {
     .owner = THIS_MODULE,
+    .open = buzzer_open,
     .write = buzzer_write,
+    .release = buzzer_release,
 };
 
+/* 初始化 */
 static int __init buzzer_init(void)
 {
     int ret;
 
-    /* 申请GPIO */
-    ret = gpio_request(BUZZER_GPIO, "buzzer_gpio");
-    if (ret) {
-        printk("gpio request failed\n");
-        return -1;
+    printk("buzzer init\n");
+
+    /* 申请 GPIO */
+    ret = gpio_request(BUZZER_GPIO, "mybuzzer");
+    if (ret)
+    {
+        printk("gpio_request failed\n");
+        return ret;
     }
 
     /* 设置为输出 */
-    gpio_direction_output(BUZZER_GPIO, 0);
+    gpio_direction_output(BUZZER_GPIO, 1);  // 默认关闭
 
     /* 注册字符设备 */
-    major = register_chrdev(0, DEVICE_NAME, &buzzer_fops);
+    major = register_chrdev(0, "mybuzzer", &buzzer_fops);
 
-    buzzer_class = class_create(THIS_MODULE, DEVICE_NAME);
-    device_create(buzzer_class, NULL, MKDEV(major, 0), NULL, DEVICE_NAME);
+    buzzer_class = class_create(THIS_MODULE, "mybuzzer_class");
+    device_create(buzzer_class, NULL, MKDEV(major, 0), NULL, "mybuzzer");
 
-    printk("buzzer driver init\n");
     return 0;
 }
 
+/* 卸载 */
 static void __exit buzzer_exit(void)
 {
-    gpio_set_value(BUZZER_GPIO, 0);
-    gpio_free(BUZZER_GPIO);
+    printk("buzzer exit\n");
 
     device_destroy(buzzer_class, MKDEV(major, 0));
     class_destroy(buzzer_class);
-    unregister_chrdev(major, DEVICE_NAME);
+    unregister_chrdev(major, "mybuzzer");
+
+    gpio_free(BUZZER_GPIO);
 }
 
 module_init(buzzer_init);

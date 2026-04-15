@@ -6,19 +6,24 @@
 
 # driver device
 
-## 温湿度传感器dht11
-    /dev/mydht11
-引脚:
-    out === gpio2
-
 ## 超声波传感器sr04
     /dev/mysr04
 引脚:
     trig === gpio0
     echo === gpio1
+    5v
+
+## 温湿度传感器dht11
+    /dev/mydht11
+引脚:
+    out === gpio2
+    5v
 
 ## 蜂鸣器buzzer
     /dev/mybuzzer
+引脚:
+    i/o === gpio3
+    3.3v
 
 ## led灯
     /dev/myled

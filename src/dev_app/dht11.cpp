@@ -17,7 +17,7 @@ DHT11::DHT11(QWidget *parent) : QMainWindow(parent)
         qDebug() << "open mydht11 success";
     }
     dht11_timer = new QTimer(this);
-    dht11_timer->setInterval(2000);
+    dht11_timer->setInterval(500);
     connect(dht11_timer,&QTimer::timeout,this,&DHT11::timeto_read_dht11data);
     dht11_timer->start();
 }

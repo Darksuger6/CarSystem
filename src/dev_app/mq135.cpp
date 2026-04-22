@@ -14,7 +14,7 @@ Mq135::Mq135(QWidget *parent) : QMainWindow(parent)
     }
 
     mq135_timer = new QTimer(this);
-    mq135_timer->setInterval(1000);   // 1秒刷新
+    mq135_timer->setInterval(500);   // 0.5秒刷新
     connect(mq135_timer, &QTimer::timeout,
             this, &Mq135::timeto_read_mq135data);
     mq135_timer->start();

@@ -18,7 +18,7 @@ Sr04::Sr04(QWidget *parent) : QMainWindow(parent)
         qDebug() << "open mysr04 success";
     }
     sr04_timer = new QTimer(this);
-    sr04_timer->setInterval(2000);
+    sr04_timer->setInterval(500);
     connect(sr04_timer,&QTimer::timeout,this,&Sr04::timeto_read_sr04data);
     sr04_timer->start();
 }

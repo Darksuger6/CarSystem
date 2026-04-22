@@ -1,68 +1,88 @@
 #include <linux/module.h>
-#include <linux/fs.h>
-#include <linux/uaccess.h>
-#include <linux/device.h>
+#include <linux/iio/iio.h>
+#include <linux/iio/sysfs.h>
+#include <linux/platform_device.h>
 
-#define DEVICE_NAME "mymq135"
-
-static int major;
-static struct class *mq135_class;
-
-/* ADC sysfs路径 */
-#define ADC_PATH "/sys/bus/iio/devices/iio:device0/in_voltage4_raw"
-
-static ssize_t mq135_read(struct file *file, char __user *buf,
-                          size_t count, loff_t *ppos)
-{
-    char adc_buf[32];
-    int value = 0;
-    struct file *fp;
-    mm_segment_t old_fs;
-
-    /* 打开ADC sysfs */
-    old_fs = get_fs();
-    set_fs(KERNEL_DS);
-
-    fp = filp_open(ADC_PATH, O_RDONLY, 0);
-    if (IS_ERR(fp)) {
-        set_fs(old_fs);
-        return -1;
-    }
-
-    kernel_read(fp, adc_buf, sizeof(adc_buf), &fp->f_pos);
-    filp_close(fp, NULL);
-
-    set_fs(old_fs);
-
-    value = simple_strtol(adc_buf, NULL, 10);
-
-    return copy_to_user(buf, &value, sizeof(value)) ? -EFAULT : sizeof(value);
-}
-
-static struct file_operations mq135_fops = {
-    .owner = THIS_MODULE,
-    .read  = mq135_read,
+struct mq135_data {
+    int value;
 };
 
-static int __init mq135_init(void)
+static int mq135_read_raw(struct iio_dev *indio_dev,
+                         struct iio_chan_spec const *chan,
+                         int *val,
+                         int *val2,
+                         long mask)
 {
-    major = register_chrdev(0, DEVICE_NAME, &mq135_fops);
+    struct mq135_data *data = iio_priv(indio_dev);
 
-    mq135_class = class_create(THIS_MODULE, DEVICE_NAME);
-    device_create(mq135_class, NULL, MKDEV(major, 0), NULL, DEVICE_NAME);
+    switch (mask) {
+    case IIO_CHAN_INFO_RAW:
+        *val = data->value;
+        return IIO_VAL_INT;
+    default:
+        return -EINVAL;
+    }
+}
 
-    printk("mq135 driver init\n");
+static const struct iio_info mq135_info = {
+    .read_raw = mq135_read_raw,
+};
+
+static const struct iio_chan_spec mq135_channels[] = {
+    {
+        .type = IIO_VOLTAGE,
+        .indexed = 1,
+        .channel = 4,  // 对应 in_voltage4_raw
+        .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+    },
+};
+
+static int mq135_probe(struct platform_device *pdev)
+{
+    struct iio_dev *indio_dev;
+    struct mq135_data *data;
+
+    indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*data));
+    if (!indio_dev) {
+        dev_err(&pdev->dev, "iio_device_alloc failed\n");
+        return -ENOMEM;
+    }
+
+    data = iio_priv(indio_dev);
+    data->value = 1000; // 初始值（可改成ADC读取）
+
+    indio_dev->info = &mq135_info;
+    indio_dev->channels = mq135_channels;
+    indio_dev->num_channels = ARRAY_SIZE(mq135_channels);
+    indio_dev->name = "mq135";
+    indio_dev->modes = INDIO_DIRECT_MODE;
+
+    int ret = devm_iio_device_register(&pdev->dev, indio_dev);
+    if (ret) {
+        dev_err(&pdev->dev, "iio_device_register failed\n");
+        return ret;
+    }
+
+    dev_info(&pdev->dev, "mq135 driver loaded successfully\n");
     return 0;
 }
 
-static void __exit mq135_exit(void)
+static int mq135_remove(struct platform_device *pdev)
 {
-    device_destroy(mq135_class, MKDEV(major, 0));
-    class_destroy(mq135_class);
-    unregister_chrdev(major, DEVICE_NAME);
+    dev_info(&pdev->dev, "mq135 driver removed\n");
+    return 0;
 }
 
-module_init(mq135_init);
-module_exit(mq135_exit);
+static struct platform_driver mq135_driver = {
+    .driver = {
+        .name = "mq135",
+    },
+    .probe = mq135_probe,
+    .remove = mq135_remove,
+};
+
+module_platform_driver(mq135_driver);
 
 MODULE_LICENSE("GPL");
+MODULE_AUTHOR("you");
+MODULE_DESCRIPTION("MQ135 IIO Driver");

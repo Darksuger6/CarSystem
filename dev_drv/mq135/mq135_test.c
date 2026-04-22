@@ -1,24 +1,38 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <string.h>
 
-int main()
+#define MQ135_PATH "/sys/bus/iio/devices/iio:device0/in_voltage4_raw"
+
+int main(void)
 {
     int fd;
-    int value;
+    char buf[32];
 
-    fd = open("/dev/mymq135", O_RDONLY);
+    fd = open(MQ135_PATH, O_RDONLY);
     if (fd < 0) {
-        perror("open");
+        perror("open failed");
         return -1;
     }
 
     while (1) {
-        read(fd, &value, sizeof(value));
+        memset(buf, 0, sizeof(buf));
 
-        printf("MQ135 ADC = %d\n", value);
+        // ⭐ 关键：每次读之前必须重置偏移
+        lseek(fd, 0, SEEK_SET);
 
-        usleep(500000);
+        int ret = read(fd, buf, sizeof(buf) - 1);
+        if (ret < 0) {
+            perror("read failed");
+            break;
+        }
+
+        printf("MQ135 Value: %s", buf);
+
+        // 控制采样频率（1秒一次）
+        sleep(1);
     }
 
     close(fd);

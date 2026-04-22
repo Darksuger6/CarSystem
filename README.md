@@ -29,4 +29,4 @@
     /dev/myled
 
 ## 气体传感器mq135(读取方式ADC)
-    /sys/bus/iio/devices/iio:device0/in_voltage3_raw
+    /sys/bus/iio/devices/iio:device0/in_voltage4_raw

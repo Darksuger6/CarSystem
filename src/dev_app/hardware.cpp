@@ -57,7 +57,7 @@ void Hardware::sr04_handler()
 
     ui->Sr04_label->setText(s);
 
-    if (f < 30)
+    if (f < 10)
     {
         QPixmap pixmap(":/images/car-chose.png");
         ui->label_3->setPixmap(pixmap.scaled(QSize(91, 111), Qt::KeepAspectRatio));
@@ -86,38 +86,40 @@ void Hardware::mq135_handler()
     char raw[30] = {};
     int tmp_raw;
     float conc;
-    char led_buf[2];
-    led_buf[0] = 0;
+    char led_buf[2] = {0};
+
     memset(raw, 0, sizeof(raw));
     mq135->mq135_read(raw);
+
     tmp_raw = atoi(raw);
+    if (tmp_raw <= 0) return;
+
     conc = ((float)tmp_raw / 4095.f) * 100.f;
+    if (conc > 100.f) conc = 100.f;
+
     QString strValue = QString::number(conc, 'f', 1);
     ui->fumes_label->setText(strValue);
+
     if(tmp_raw > 2880){
         QPixmap pixmap(":/images/air-chose.png");
-        pixmap = pixmap.scaled(QSize(90, 110), Qt::KeepAspectRatio);
-        ui->label_5->setPixmap(pixmap);
+        ui->label_5->setPixmap(pixmap.scaled(QSize(90, 110), Qt::KeepAspectRatio));
         ui->Humilabel_3->setStyleSheet("color: red;");
-        if(tmp_raw == 4095){
-            QString strValue = QString::number(conc, 'f', 0);
-            ui->fumes_label->setText(strValue);
-        }
-        QPixmap pixmap1(":/images/led-chose.png");
-        pixmap1 = pixmap1.scaled(QSize(120, 120), Qt::KeepAspectRatio);
+
         led_buf[1] = 0;
         led->led_write(led_buf);
-        ui->led->setPixmap(pixmap1);
+
+        QPixmap pixmap1(":/images/led-chose.png");
+        ui->led->setPixmap(pixmap1.scaled(QSize(120, 120), Qt::KeepAspectRatio));
     }else{
         QPixmap pixmap(":/images/air.png");
-        pixmap = pixmap.scaled(QSize(90, 110), Qt::KeepAspectRatio);
-        ui->label_5->setPixmap(pixmap);
+        ui->label_5->setPixmap(pixmap.scaled(QSize(90, 110), Qt::KeepAspectRatio));
         ui->Humilabel_3->setStyleSheet("color: rgb(85, 255, 0);");
-        QPixmap pixmap1(":/images/led.png");
-        pixmap1 = pixmap1.scaled(QSize(120, 120), Qt::KeepAspectRatio);
+
         led_buf[1] = 1;
         led->led_write(led_buf);
-        ui->led->setPixmap(pixmap1);
+
+        QPixmap pixmap1(":/images/led.png");
+        ui->led->setPixmap(pixmap1.scaled(QSize(120, 120), Qt::KeepAspectRatio));
     }
 }
 
